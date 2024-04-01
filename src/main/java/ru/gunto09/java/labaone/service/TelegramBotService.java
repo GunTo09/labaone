@@ -34,7 +34,7 @@ public class TelegramBotService  {
 
     private void buttonClickReact(Update update) { //Реагируем на событие
         //Подготавливаем сообщение на ответ
-        SendMessage request = new SendMessage(update.message().chat().id(), "Hi") //update.message().chat().id() - Id, в какой чат отправлять сообщение, в данном случае - тому, кто написал
+        SendMessage request = new SendMessage(update.message().chat().id(), "Ты дурак? Нормально команду напиши, дятел") //update.message().chat().id() - Id, в какой чат отправлять сообщение, в данном случае - тому, кто написал
                 .parseMode(ParseMode.HTML) //Без понятия, что такое, но было в документации
                 .disableWebPagePreview(true) //Без понятия, что такое, но было в документации
                 .disableNotification(true) //Без понятия, что такое, но было в документации
@@ -51,6 +51,8 @@ public class TelegramBotService  {
             handleCallbackQuery(update.callbackQuery());
         }else if(update.message() != null && update.message().text() != null && update.message().text().equals("/joke")) {
             sendJokeInMessage(update.message().chat().id());
+        }else{
+            buttonClickReact(update);
         }
     }
 
@@ -75,8 +77,8 @@ public class TelegramBotService  {
 
     //изменение 1
     private void sendStartMessage(Long chatId) {
-        SendMessage request = new SendMessage(chatId, "Привет! Я могу");
-        request.replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton("Ну моги").callbackData("/joke")));
+        SendMessage request = new SendMessage(chatId, "Привет! Хочешь шутку?");
+        request.replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton("Да, хочу").callbackData("/joke")));
         this.telegramBot.execute(request);
     }
 
