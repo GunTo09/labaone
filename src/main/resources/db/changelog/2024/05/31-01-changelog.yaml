@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - - changeSet:
+        id: 1717371069814-1
+        author: uvaro (generated)
+        objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+        changes:
+          - createSequence:
+              incrementBy: 1
+              sequenceName: joke_id_seq
+              startValue: 1
+  - changeSet:
+      id: 1717184226794-1
+      author: uvaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_jokes
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: text_joke
+                  type: VARCHAR(255)
+              - column:
+                  name: added_date
+                  type: DATETIME
+              - column:
+                  name: changed_date
+                  type: DATETIME
+            tableName: jokes
+
