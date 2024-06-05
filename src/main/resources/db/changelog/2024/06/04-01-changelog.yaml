@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1717519858666-1
+      author: uvaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: call_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1717519858666-4
+      author: uvaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_jokes_call
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: date_call
+                  type: DATETIME
+              - column:
+                  name: joke_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: INT
+            tableName: jokes_call
+  - changeSet:
+      id: 1717519858666-5
+      author: uvaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: joke_id
+            baseTableName: jokes_call
+            constraintName: FK_JOKES_CALL_ON_JOKE
+            referencedColumnNames: id
+            referencedTableName: jokes
+

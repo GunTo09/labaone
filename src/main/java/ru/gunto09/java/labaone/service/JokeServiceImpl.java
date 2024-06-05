@@ -1,12 +1,15 @@
 package ru.gunto09.java.labaone.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.gunto09.java.labaone.model.Call;
 import ru.gunto09.java.labaone.model.Joke;
+import ru.gunto09.java.labaone.repository.CallRepository;
 import ru.gunto09.java.labaone.repository.JokeReposiroty;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class JokeServiceImpl implements JokeService {
 
     private final JokeReposiroty jokeReposiroty;
+    private final CallRepository callRepository;
 
     @Override
     public void postJoke(Joke textJoke) {
@@ -22,12 +26,15 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public List<Joke> getAllJokes() {
-        return jokeReposiroty.findAll();
+    public Page<Joke> getAllJokes(int page, boolean sortByDate) {
+        int size = 3;
+        return jokeReposiroty.findAll(PageRequest.of(page, size, Sort.by("dateAdded")));
     }
 
     @Override
     public Optional<Joke> getJokeById(Long id) {
+        Optional<Joke> joke =jokeReposiroty.findById(id);
+        callRepository.save(new Call(null, null, joke.get(), 1));
         return jokeReposiroty.findById(id);
     }
 
@@ -46,4 +53,5 @@ public class JokeServiceImpl implements JokeService {
     public void deleteJoke(Long id) {
         jokeReposiroty.deleteById(id);
     }
+
 }

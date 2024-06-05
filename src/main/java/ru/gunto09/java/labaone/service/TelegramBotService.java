@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import ru.gunto09.java.labaone.model.Joke;
 import ru.gunto09.java.labaone.service.JokeService;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -62,9 +63,9 @@ public class TelegramBotService  {
     }
 
     private void sendJokeInMessage(Long chatId){
-        List<Joke> jokes = jokeService.getAllJokes();
+        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(6)+1);
         if (!jokes.isEmpty()) {
-            Joke randomJoke = jokes.get(new Random().nextInt(jokes.size()));
+            Joke randomJoke = jokes.get();
             SendMessage request = new SendMessage(chatId, randomJoke.getTextJoke());
             this.telegramBot.execute(request);
         } else {
@@ -91,9 +92,9 @@ public class TelegramBotService  {
     }
 
     private void sendRandomJoke(Long chatId) {
-        List<Joke> jokes = jokeService.getAllJokes();
+        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(6)+1);
         if (!jokes.isEmpty()) {
-            Joke randomJoke = jokes.get(new Random().nextInt(jokes.size()));
+            Joke randomJoke = jokes.get();
             SendMessage request = new SendMessage(chatId, randomJoke.getTextJoke());
             this.telegramBot.execute(request);
         } else {
