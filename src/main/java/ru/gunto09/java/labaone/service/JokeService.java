@@ -18,5 +18,5 @@ public interface JokeService {
 
     void deleteJoke(Long id);
 
-
+    int getAmountJokes();
 }

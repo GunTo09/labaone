@@ -34,7 +34,7 @@ public class JokeServiceImpl implements JokeService {
     @Override
     public Optional<Joke> getJokeById(Long id) {
         Optional<Joke> joke =jokeReposiroty.findById(id);
-        callRepository.save(new Call(null, null, joke.get(), 1));
+        joke.ifPresent(value -> callRepository.save(new Call(null, null, value, 1)));
         return jokeReposiroty.findById(id);
     }
 
@@ -54,4 +54,9 @@ public class JokeServiceImpl implements JokeService {
         jokeReposiroty.deleteById(id);
     }
 
+    @Override
+    public int getAmountJokes(){
+        int size = jokeReposiroty.amountJokes();
+        return size;
+    }
 }

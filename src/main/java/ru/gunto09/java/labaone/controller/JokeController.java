@@ -1,6 +1,7 @@
 package ru.gunto09.java.labaone.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,42 +18,43 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/jokes")
 @RequiredArgsConstructor
+@Slf4j
 public class JokeController {
 
     private final JokeService jokeService;
     private final JokeReposiroty jokeReposiroty;
 
     @PostMapping
-    ResponseEntity<Void> postJoke (@RequestBody Joke textJoke){
+    public ResponseEntity<Void> postJoke (@RequestBody Joke textJoke){
         jokeService.postJoke(textJoke);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    ResponseEntity<Page<Joke>> getJokes(@RequestParam int page,
+    public ResponseEntity<Page<Joke>> getJokes(@RequestParam int page,
                                         @RequestParam boolean sortByDate){
         return ResponseEntity.ok(jokeService.getAllJokes(page, sortByDate));
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Joke> getJokeById(@PathVariable Long id){
+    public ResponseEntity<Joke> getJokeById(@PathVariable Long id){
         return jokeService.getJokeById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Joke> updateJoke(@PathVariable Long id, @RequestBody Joke textJoke){
+    public ResponseEntity<Joke> updateJoke(@PathVariable Long id, @RequestBody Joke textJoke){
         Optional<Joke> changedJoke = jokeService.putJoke(id, textJoke);
         return changedJoke.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteJoke(@PathVariable Long id){
+    public ResponseEntity<Void> deleteJoke(@PathVariable Long id){
         jokeService.deleteJoke(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/random")
     public ResponseEntity<Page<Joke>> getRandom() {
-        return ResponseEntity.ok(jokeReposiroty.findRandom(PageRequest.of(0, 1)));
+        return ResponseEntity.ok(jokeReposiroty.findRandom(PageRequest.of(0, 5)));
     }
 }

@@ -15,4 +15,7 @@ import java.util.List;
 public interface JokeReposiroty extends PagingAndSortingRepository<Joke, Long>, JpaRepository<Joke, Long> {
     @Query (value = "SELECT o.id, o.text_joke, o.added_date, o.changed_date FROM jokes o ORDER BY RANDOM()", nativeQuery = true)
     Page<Joke> findRandom(Pageable pageable);
+
+    @Query (value = "SELECT COUNT(*) FROM public.jokes", nativeQuery = true)
+    int amountJokes();
 }

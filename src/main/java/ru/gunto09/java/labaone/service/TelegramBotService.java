@@ -12,6 +12,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gunto09.java.labaone.model.Joke;
+import ru.gunto09.java.labaone.repository.JokeReposiroty;
 import ru.gunto09.java.labaone.service.JokeService;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class TelegramBotService  {
             return UpdatesListener.CONFIRMED_UPDATES_ALL; //Подтверждаем, что все забрали
         }, Throwable::printStackTrace); //Если поймали ошибку - выводим трейс, чтобы понять, в чем дело
     }
+
 
     private void buttonClickReact(Update update) { //Реагируем на событие
         //Подготавливаем сообщение на ответ
@@ -63,7 +65,8 @@ public class TelegramBotService  {
     }
 
     private void sendJokeInMessage(Long chatId){
-        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(6)+1);
+        int size = jokeService.getAmountJokes();
+        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(size) + 1);
         if (!jokes.isEmpty()) {
             Joke randomJoke = jokes.get();
             SendMessage request = new SendMessage(chatId, randomJoke.getTextJoke());
@@ -92,7 +95,8 @@ public class TelegramBotService  {
     }
 
     private void sendRandomJoke(Long chatId) {
-        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(6)+1);
+        int size = jokeService.getAmountJokes();
+        Optional<Joke> jokes = jokeService.getJokeById(new Random().nextLong(size) + 1);
         if (!jokes.isEmpty()) {
             Joke randomJoke = jokes.get();
             SendMessage request = new SendMessage(chatId, randomJoke.getTextJoke());

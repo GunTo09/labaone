@@ -1,6 +1,7 @@
 package ru.gunto09.java.labaone.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/call")
 @RequiredArgsConstructor
+@Slf4j
 public class CallController {
 
     private final CallRepository callRepository;
